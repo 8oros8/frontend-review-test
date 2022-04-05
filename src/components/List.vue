@@ -30,7 +30,7 @@ export default {
   },
   created() {
     this.getList() // Первичная загрузка списка
-    setInterval(this.getList, 5000); // Обновление каждые две секунды
+    setInterval(this.getList, 2000); // Обновление каждые две секунды
   },
 };
 </script>
