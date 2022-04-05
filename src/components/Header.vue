@@ -5,22 +5,16 @@ export default {
     cart: Array,
     required: true,
     default: {},
-
     currency: String,
   },
-  data() {
-    return {
-      cartPrice: 0,
-    };
-  },
-  watch: {
-    cart(cart) {
-      let val = 0;
-      cart.forEach((item) => {
-        val += item.price * item.amount;
-      });
-      this.cartPrice = val;
-    },
+  computed: {
+    cartPrice() {
+      let cartPrice = 0
+      for (let item of this.cart) {
+        cartPrice += item.price * item.amount
+      }
+      return cartPrice
+    }
   },
 }
 </script>
@@ -34,6 +28,6 @@ export default {
 
 <template>
   <div class="header">
-    <h3>Товаров в корзине на: {{ cartPrice }} {{ currency }}</h3>
+    <h3>Товаров в корзине на: {{ Math.round(cartPrice) }} {{ currency }}</h3>
   </div>
 </template>

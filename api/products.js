@@ -27,7 +27,13 @@ const dataService = {
         title: 'Капуста',
         price: 28.50,
         image: '/products/cabbage.jpg',
-      }
+      },
+      {
+        id: 'beef',
+        title: 'Мясо',
+        price: 999,
+        image: '/products/beef.jpg',
+      }, // Добавим в список продуктов мясо
     ];
     return products;
   },

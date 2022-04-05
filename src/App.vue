@@ -2,7 +2,7 @@
   <div id="app">
     <Header :cart="cart" :currency="currency"></Header>
     <List :currency="currency"/>
-    <Cart :cart="cart"/>
+    <Cart :cart="cart" :currency="currency"/>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   name: 'App',
   data() {
     return {
-      cart: [],
+      cart: this.$store.state.cart, // Используем данные из Vuex
       currency: 'VGTB',
     };
   },
@@ -38,7 +38,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   color: #2c3e50;
 }
 </style>

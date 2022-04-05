@@ -5,14 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    cart: []
   },
   mutations: {
-  },
-  actions: {
-    getProductsList(ctx, data) {
-      return api.getProductsList();
+    add(state, item) {
+      state.cart.unshift(item) // unshift для реализации указанного порядка покупок в корзине
+    },
+    remove(state, item) {
+      state.cart.splice(state.cart.indexOf(item), 1) // в будущем понадобиться функция удаления товаров
     },
   },
-  modules: {
+  actions: {
+    getProductsList(ctx, data) { // Если мы хотим каждые две секунды подгружать новые изменения с сервера, нет смысла хранить данные во Vuex, однако для удобства определить метод для get запроса тут можно
+      return api.getProductsList();
+    },
   }
 })

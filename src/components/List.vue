@@ -1,22 +1,18 @@
 <template>
   <div class="product-list">
-    <div class="card" v-for="product in products" :style="{width: cardsWidth + '%'}">
-      <p class="card-title">{{ product.title }}</p>
-      <img class="card-image" :src="product.image" alt="">
-      <p class="card-price">Цена: {{ product.price }} {{ currency }}</p>
-
-      <div>
-        <input type="number" ref="amount" :id="product.id">
-        <span>кг</span>
-      </div>
-
-      <button @click="addToCart(product)"> В корзину </button>
-    </div>
+    <list-item v-for="product in products"
+               :product="product"
+               :currency="currency">
+    </list-item>
   </div>
 </template>
 
 <script>
+
+import listItem from "./listItem"; // Создадим отдельный компонент для карточки товара, это позволит переиспользовать и реактивно рендерить каждую из них
+
 export default {
+  components: {listItem},
   props: {
     currency: String,
   },
@@ -26,63 +22,23 @@ export default {
     };
   },
   computed: {
-    cardsWidth() {
-      let width = window.innerWidth;
-      let count = 1;
-      if (width > '840px') {
-        count = 3;
-      } else if ((width > '420px' && width < '840px')) {
-        count = 2;
-      }
-
-      return 100 / count;
-    },
   },
   methods: {
-    startPricesMonitoring() {
-      setInterval(this.getList, 1000);
-    },
     async getList() {
-      let data = await this.$store.dispatch('getProductsList');
-
-      this.products = data;
-    },
-    addToCart(product) {
-      let amount = this.$refs.amount.find((input) => input.id === product.id).value;
-
-      let data = {
-        amount,
-        price: product.price,
-        title: product.title,
-      };
-      this.$parent.cart.push(data);
+      this.products = await this.$store.dispatch('getProductsList');
     },
   },
   created() {
-    this.startPricesMonitoring();
+    this.getList() // Первичная загрузка списка
+    setInterval(this.getList, 5000); // Обновление каждые две секунды
   },
 };
 </script>
 
 <style>
   .product-list {
+    display: flex;
+    flex-wrap: wrap;
     padding: 10px;
   }
-
-  .card {
-    display: inline-block;
-    width: 100%;
-    border: 1px solid #908888;
-    border-radius: 5px;
-    text-align: center;
-    padding: 10px;
-  }
-  .card-image {
-    width: 100%;
-  }
-  button {
-    padding: 5px;
-    margin: 5px;
-  }
-
 </style>
